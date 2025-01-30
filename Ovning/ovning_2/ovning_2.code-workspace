@@ -1,11 +1,22 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../../Components"
-		}
-	],
-    "settings": {}
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../../Components"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "algorithm": "cpp",
+            "bitset": "cpp",
+            "iterator": "cpp",
+            "xhash": "cpp",
+            "xmemory": "cpp",
+            "xtree": "cpp",
+            "xutility": "cpp",
+            "format": "cpp"
+        }
+    }
 }
