@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include "printer.h"
 
-int func(void)
+namespace ovning_2
 {
-    return 1;
+    int func(void)
+    {
+        return 1;
+    }
 }

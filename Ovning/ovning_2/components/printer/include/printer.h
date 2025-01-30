@@ -1,3 +1,6 @@
+#pragma once
 
-
-int func(void);
+namespace ovning_2
+{
+    int func(void);
+}
