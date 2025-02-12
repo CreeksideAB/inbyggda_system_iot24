@@ -3,8 +3,40 @@
 #include "driver/ledc.h"
 #include "freertos/FreeRTOS.h"
 
+typedef int (*callback_f)(int);
+callback_f callback = NULL;
+
+int callback_function(int value)
+{
+    return value * 2;
+}
+
+void set_callback(callback_f cb)
+{
+    callback = cb;
+}
+
+int *value = NULL;
+
+int actual_value = 0;
+
+void set_value(int *v)
+{
+    value = v;
+}
+
 void app_main(void)
 {
+    set_callback(callback_function);
+
+    set_value(&actual_value);
+
+    if (callback != NULL)
+    {
+        int result = callback(*value);
+        printf("Result: %d\n", result);
+    }
+
     gpio_config_t buttonConfig;
     buttonConfig.mode = GPIO_MODE_INPUT;
     buttonConfig.intr_type = GPIO_INTR_DISABLE;

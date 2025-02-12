@@ -4,7 +4,7 @@
 #include "esp_log.h"
 #include "string.h"
 
-#define UART_TX_PIN GPIO_NUM_14
+#define UART_TX_PIN GPIO_NUM_13
 #define UART_RX_PIN GPIO_NUM_12
 
 #define UART_RECEIVE_BUFFER_SIZE 128
