@@ -4,16 +4,22 @@
 typedef enum
 {
     STATE_ON,
-    STATE_ON_DEBOUNCE,
-    STATE_OFF,
-    STATE_OFF_DEBOUNCE
+    STATE_OFF
 } state_e;
+
+typedef enum
+{
+    DEBOUNCE,
+    DONE
+} sub_state_e;
 
 const char *TAG = "STATE";
 
 state_e currentState = STATE_OFF;
 state_e previousState = STATE_OFF;
 state_e nextState = STATE_OFF;
+
+sub_state_e currentSubState = DEBOUNCE;
 
 int buttonIsPressed = 0;
 int level = 0;
@@ -22,14 +28,14 @@ int timeSwitchedState = 0;
 
 void update_state_machine();
 
+void update_sub_state_machine();
+
 void app_main(void)
 {
 
     while (1)
     {
         update_state_machine();
-
-        // delay;
     }
 }
 
@@ -40,39 +46,24 @@ void update_state_machine()
     switch (currentState)
     {
     case STATE_ON:
-        if (level == 0)
-        {
-            nextState = STATE_ON_DEBOUNCE;
-            // callback function that trigger on level going low
-        }
-        break;
-
-    case STATE_ON_DEBOUNCE:
         if (currentState != previousState)
         {
-            // kör kod som endast ska ske en gång
-            buttonIsPressed = 0;
-            // callback function that trigger on level going low
+            currentSubState = DEBOUNCE;
         }
-        if (elapsedTime > 30)
+        update_sub_state_machine();
+        if (level == 0 && currentSubState == DONE)
         {
             nextState = STATE_OFF;
         }
         break;
 
     case STATE_OFF:
-        if (level == 1)
-        {
-            nextState = STATE_OFF_DEBOUNCE;
-        }
-        break;
-
-    case STATE_OFF_DEBOUNCE:
         if (currentState != previousState)
         {
-            buttonIsPressed = 1;
+            currentSubState = DEBOUNCE;
         }
-        if (elapsedTime > 30)
+        update_sub_state_machine();
+        if (level == 1 && currentSubState == DONE)
         {
             nextState = STATE_ON;
         }
@@ -90,11 +81,31 @@ void update_state_machine()
         switch (currentState)
         {
 
-                default:
+        default:
             break;
         }
     }
 
     previousState = currentState;
     currentState = nextState;
+}
+
+void update_sub_state_machine()
+{
+    elapsedTime = /*Current time*/ 0 - timeSwitchedState; // calcualte elapsed
+    switch (currentSubState)
+    {
+    case DEBOUNCE:
+        if (elapsedTime > 500)
+        {
+            currentSubState = DONE;
+        }
+        break;
+
+    case DONE:
+        break;
+
+    default:
+        break;
+    }
 }
