@@ -38,7 +38,6 @@ void app_main(void)
     TickType_t sentTimer = xTaskGetTickCount();
     while (1)
     {
-
         TickType_t elapsedTime = xTaskGetTickCount() - sentTimer;
         if (elapsedTime > pdMS_TO_TICKS(SEND_UART_PERIOD))
         {
